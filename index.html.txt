@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>د. سالم الصرايرة | استشاري طب أسنان الأطفال</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --deep:#040c18;--bg:#081525;--bg2:#0c1e35;
+  --card:rgba(12,30,55,0.55);--card-border:rgba(66,165,245,0.1);
+  --blue-dark:#0d47a1;--blue:#1565c0;--blue-mid:#1e88e5;
+  --blue-bright:#42a5f5;--blue-light:#90caf9;--blue-pale:#e3f2fd;
+  --cyan:#00acc1;--cyan-dim:rgba(0,172,193,0.15);
+  --text:#f0f4f8;--text2:#90a4ae;--text3:#546e7a;
+  --green:#25d366;--green-dark:#128c7e;
+  --red:#ea4335;--fb:#1877f2;
+  --ig1:#f09433;--ig2:#e6683c;--ig3:#dc2743;--ig4:#cc2366;--ig5:#bc1888;
+  --radius:18px;--radius-sm:12px;
+  --font-ar:'Cairo',sans-serif;--font-en:'Plus Jakarta Sans',sans-serif;
+}
+::selection{background:var(--blue);color:#fff}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--blue-dark);border-radius:4px}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--font-ar);background:var(--deep);color:var(--text);min-height:100dvh;overflow-x:hidden;line-height:1.7;-webkit-font-smoothing:antialiased}
+
+#welcome{position:fixed;inset:0;z-index:9999;background:var(--deep);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s ease}
+#welcome.hide{opacity:0;visibility:hidden;pointer-events:none}
+.welcome-tooth{width:72px;height:72px;margin-bottom:28px;animation:pulse-tooth 2s ease-in-out infinite}
+.welcome-tooth svg{width:100%;height:100%}
+.ecg-container{width:240px;height:55px;margin-bottom:32px;overflow:hidden}
+.ecg-line{stroke:var(--blue-bright);stroke-width:2.5;fill:none;stroke-dasharray:320;stroke-dashoffset:320;animation:draw-ecg 1.8s ease forwards .3s;filter:drop-shadow(0 0 8px rgba(66,165,245,0.5))}
+.welcome-text{font-size:1.15rem;font-weight:600;color:var(--text2);opacity:0;animation:fade-up .8s ease forwards 1.2s;text-align:center;padding:0 24px}
+.welcome-text span{color:var(--blue-light)}
+
+.bg-mesh{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.35;will-change:transform}
+.blob-1{width:300px;height:300px;background:var(--blue-dark);top:-80px;right:-100px;animation:float-1 22s ease-in-out infinite}
+.blob-2{width:250px;height:250px;background:var(--cyan);bottom:10%;left:-80px;animation:float-2 26s ease-in-out infinite;opacity:.2}
+.blob-3{width:200px;height:200px;background:var(--blue);top:40%;right:-50px;animation:float-3 20s ease-in-out infinite;opacity:.18}
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:128px}
+
+#main{position:relative;z-index:2;max-width:440px;margin:0 auto;padding:24px 20px env(safe-area-inset-bottom,24px);opacity:0;transform:translateY(20px);transition:opacity .8s ease .3s  ,transform .8s ease .3s}
+#main.show{opacity:1;transform:translateY(0)}
+
+.profile{text-align:center;padding:28px 0 24px}
+.avatar-wrap{position:relative;width:140px;height:140px;margin:0 auto 22px}
+.avatar-ring{position:absolute;inset:-5px;border-radius:50%;background:conic-gradient(var(--blue-bright),var(--cyan),var(--blue-mid),var(--blue-bright));animation:spin-ring 6s linear infinite;opacity:.7}
+.avatar-ring::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--bg)}
+.avatar{position:relative;z-index:1;width:140px;height:140px;border-radius:50%;overflow:hidden;border:4px solid var(--bg);background:linear-gradient(145deg,#0a1e3d,#06122a);display:flex;align-items:center;justify-content:center}
+.avatar img.doc-photo{width:100%;height:100%;object-fit:cover;display:block}
+.avatar-fallback{display:none;animation:tooth-float 3s ease-in-out infinite}
+.avatar-glow{position:absolute;inset:-24px;border-radius:50%;background:radial-gradient(circle,rgba(66,165,245,0.18),transparent 70%);z-index:-1;animation:glow-pulse 3s ease-in-out infinite}
+
+.profile-name-ar{font-size:1.65rem;font-weight:800;color:var(--text);margin-bottom:2px}
+.profile-name-en{font-family:var(--font-en);font-size:.85rem;font-weight:500;color:var(--blue-light);margin-bottom:10px;direction:ltr;display:inline-block}
+.profile-spec{font-size:.92rem;font-weight:600;color:var(--text2);line-height:1.9;max-width:340px;margin:0 auto}
+.profile-spec .highlight{color:var(--cyan)}
+.divider{width:60px;height:3px;margin:0 auto 28px;border-radius:3px;background:linear-gradient(90deg,var(--blue-mid),var(--cyan));opacity:.5}
+.glass{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.credentials{padding:22px 20px;margin-bottom:20px}
+.credentials-title{font-size:.78rem;font-weight:700;color:var(--blue-bright);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;font-family:var(--font-en);direction:ltr;text-align:center}
+.cred-item{display:flex;align-items:flex-start;gap:12px;padding:8px 0;border-bottom:1px solid rgba(66,165,245,0.06);opacity:0;transform:translateX(20px);transition:all .5s ease}
+.cred-item:last-child{border-bottom:none}
+.cred-item.visible{opacity:1;transform:translateX(0)}
+.cred-icon{flex-shrink:0;width:28px;height:28px;border-radius:8px;background:var(--cyan-dim);display:flex;align-items:center;justify-content:center;margin-top:2px}
+.cred-icon svg{width:14px;height:14px;color:var(--cyan)}
+.cred-text{font-size:.82rem;color:var(--text2);line-height:1.7;font-weight:500}
+.section-label{font-size:.72rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;padding-right:4px;font-family:var(--font-en);direction:ltr}
+
+.book-section{margin-bottom:22px}
+.book-btn{display:flex;align-items:center;justify-content:center;gap:14px;width:100%;padding:20px 18px;border:none;border-radius:var(--radius);cursor:pointer;font-family:var(--font-ar);font-size:1.05rem;font-weight:800;color:#fff;position:relative;overflow:hidden;text-decoration:none;background:linear-gradient(135deg,var(--green-dark),var(--green),#4ceb94);background-size:200% 200%;animation:gradient-shift 5s ease infinite;box-shadow:0 4px 30px rgba(37,211,102,0.35),inset 0 1px 0 rgba(255,255,255,0.15);transition:transform .15s ease,box-shadow .3s ease}
+.book-btn:active{transform:scale(.975)}
+.book-btn:hover{box-shadow:0 8px 40px rgba(37,211,102,0.5),inset 0 1px 0 rgba(255,255,255,0.2)}
+.book-btn svg{width:24px;height:24px;flex-shrink:0}
+.book-btn-text{text-align:center;line-height:1.5}
+.book-btn-text .book-sub{display:block;font-size:.75rem;font-weight:500;opacity:.85;margin-top:2px;font-family:var(--font-en);direction:ltr}
+.book-btn-glow{position:absolute;inset:-3px;border-radius:var(--radius);background:linear-gradient(135deg,var(--green),#4ceb94,var(--green-dark));background-size:300% 300%;animation:gradient-shift 5s ease infinite;z-index:-1;filter:blur(14px);opacity:.35}
+
+.actions{margin-bottom:20px}
+.action-btn{display:flex;align-items:center;gap:14px;width:100%;padding:16px 18px;margin-bottom:10px;border:none;border-radius:var(--radius-sm);cursor:pointer;font-family:var(--font-ar);font-size:.9rem;font-weight:600;color:var(--text);text-decoration:none;position:relative;overflow:hidden;transition:transform .15s ease,box-shadow .3s ease;-webkit-appearance:none;appearance:none}
+.action-btn:active{transform:scale(.975)}
+.action-btn .btn-icon{flex-shrink:0;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;transition:transform .2s ease}
+.action-btn:hover .btn-icon{transform:scale(1.08)}
+.action-btn .btn-icon svg{width:20px;height:20px}
+.action-btn .btn-label{flex:1;text-align:right}
+.action-btn .btn-sub{font-size:.72rem;font-weight:400;color:var(--text3);font-family:var(--font-en);direction:ltr;display:block;margin-top:1px}
+.action-btn .btn-arrow{flex-shrink:0;opacity:.3;transition:transform .2s ease,opacity .2s ease}
+.action-btn:hover .btn-arrow{opacity:.6;transform:translateX(-3px)}
+.btn-call{background:linear-gradient(135deg,rgba(21,101,192,0.25),rgba(13,71,161,0.15));border:1px solid rgba(66,165,245,0.12)}
+.btn-call:hover{box-shadow:0 4px 20px rgba(21,101,192,0.2)}
+.btn-call .btn-icon{background:linear-gradient(135deg,var(--blue),var(--blue-dark))}
+.btn-whatsapp{background:linear-gradient(135deg,rgba(37,211,102,0.18),rgba(18,140,126,0.12));border:1px solid rgba(37,211,102,0.12)}
+.btn-whatsapp:hover{box-shadow:0 4px 20px rgba(37,211,102,0.15)}
+.btn-whatsapp .btn-icon{background:linear-gradient(135deg,var(--green),var(--green-dark))}
+.btn-maps{background:linear-gradient(135deg,rgba(234,67,53,0.15),rgba(198,40,40,0.1));border:1px solid rgba(234,67,53,0.1)}
+.btn-maps:hover{box-shadow:0 4px 20px rgba(234,67,53,0.12)}
+.btn-maps .btn-icon{background:linear-gradient(135deg,#ea4335,#c62828)}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.15);transform:scale(0);animation:ripple-anim .6s ease-out forwards;pointer-events:none}
+
+.social{margin-bottom:20px}
+.social-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.social-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;border:none;border-radius:var(--radius-sm);cursor:pointer;font-family:var(--font-ar);font-size:.85rem;font-weight:600;color:#fff;text-decoration:none;position:relative;overflow:hidden;transition:transform .15s ease,box-shadow .3s ease}
+.social-btn:active{transform:scale(.975)}
+.social-btn svg{width:20px;height:20px}
+.btn-facebook{background:linear-gradient(135deg,#1877f2,#0d5bbd);border:1px solid rgba(24,119,242,0.3)}
+.btn-facebook:hover{box-shadow:0 4px 20px rgba(24,119,242,0.25)}
+.btn-instagram{background:linear-gradient(135deg,var(--ig1),var(--ig2),var(--ig3),var(--ig4),var(--ig5));border:1px solid rgba(240,148,51,0.2)}
+.btn-instagram:hover{box-shadow:0 4px 20px rgba(220,39,67,0.2)}
+
+.footer{text-align:center;padding:20px 0 8px;border-top:1px solid rgba(66,165,245,0.06)}
+.footer-text{font-size:.7rem;color:var(--text3);font-weight:500;font-family:var(--font-en);direction:ltr}
+.footer-dots{display:flex;justify-content:center;gap:6px;margin-bottom:10px}
+.footer-dot{width:4px;height:4px;border-radius:50%;background:var(--blue-dark)}
+
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg2);border:1px solid var(--card-border);color:var(--text);padding:14px 24px;border-radius:14px;font-size:.85rem;font-weight:600;z-index:10000;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,0,0,0.4);opacity:0;transition:all .35s ease;pointer-events:none;max-width:90vw;white-space:normal;text-align:center;line-height:1.5}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.particle{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--blue-bright);opacity:0;animation:particle-float linear infinite}
+
+@keyframes pulse-tooth{0%,100%{transform:scale(1);opacity:.75}50%{transform:scale(1.12);opacity:1}}
+@keyframes draw-ecg{to{stroke-dashoffset:0}}
+@keyframes fade-up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin-ring{to{transform:rotate(360deg)}}
+@keyframes glow-pulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:.8;transform:scale(1.05)}}
+@keyframes float-1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-30px,40px) scale(1.1)}66%{transform:translate(20px,-20px) scale(.95)}}
+@keyframes float-2{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-30px) scale(1.05)}66%{transform:translate(-20px,30px) scale(.9)}}
+@keyframes float-3{0%,100%{transform:translate(0,0)}50%{transform:translate(-40px,-40px)}}
+@keyframes ripple-anim{to{transform:scale(4);opacity:0}}
+@keyframes gradient-shift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes particle-float{0%{opacity:0;transform:translateY(100vh) scale(0)}10%{opacity:.6}90%{opacity:.6}100%{opacity:0;transform:translateY(-10vh) scale(1)}}
+@keyframes tooth-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(min-width:480px){#main{padding:32px 28px 32px}.profile-name-ar{font-size:1.85rem}.action-btn{padding:18px 20px}}
+</style>
+</head>
+<body>
+
+<div id="welcome">
+  <div class="welcome-tooth">
+    <svg viewBox="0 0 100 100" fill="none">
+      <defs><linearGradient id="wtg" x1="50" y1="5" x2="50" y2="95" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e3f2fd"/><stop offset="40%" stop-color="#90caf9"/><stop offset="100%" stop-color="#1e88e5"/></linearGradient><filter id="wts"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#42a5f5" flood-opacity="0.4"/></filter></defs>
+      <path d="M50 8 C38 8,25 14,22 28 C20 36,22 42,26 48 L32 72 C33 78,36 82,39 78 L42 62 C43 58,47 56,50 56 C53 56,57 58,58 62 L61 78 C64 82,67 78,68 72 L74 48 C78 42,80 36,78 28 C75 14,62 8,50 8Z" fill="url(#wtg)" filter="url(#wts)"/>
+      <path d="M50 14 C40 14,30 19,28 30 C26 36,28 40,31 44 L35 58 C36 52,42 48,50 48 C58 48,64 52,65 58 L69 44 C72 40,74 36,72 30 C70 19,60 14,50 14Z" fill="rgba(255,255,255,0.15)"/>
+      <ellipse cx="42" cy="26" rx="6" ry="9" fill="rgba(255,255,255,0.18)" transform="rotate(-10 42 26)"/>
+    </svg>
+  </div>
+  <div class="ecg-container">
+    <svg viewBox="0 0 240 55" preserveAspectRatio="none" style="width:100%;height:100%"><path class="ecg-line" d="M0,28 L75,28 L85,28 L93,8 L103,48 L113,20 L123,28 L130,28 L240,28"/></svg>
+  </div>
+  <p class="welcome-text">👋 أهلاً بك في عيادة <span>د. سالم الصرايرة</span></p>
+</div>
+
+<div class="bg-mesh"><div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div></div>
+<div class="noise"></div>
+<div class="particles" id="particles"></div>
+
+<main id="main">
+
+  <section class="profile reveal">
+    <div class="avatar-wrap">
+      <div class="avatar-ring"></div>
+      <div class="avatar">
+        <img class="doc-photo" id="docPhoto" src="https://scontent.famm7-1.fna.fbcdn.net/v/t39.30808-1/631756158_3347148218766975_5479548849812652394_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=103&ccb=1-7&_nc_sid=e99d92&_nc_ohc=MU2gvi5eB0oQ7kNvwHXCRze&_nc_oc=AdosaOAAekjJchSPYC1AnibnIYmeCcSQdtl3YeRKKu4CuAUq2gjz40SHf2vva_Ejf0iPY808GzGvAAKnLT4JSKg5&_nc_zt=24&_nc_ht=scontent.famm7-1.fna&_nc_gid=w_jjLodW2lcykYDmAwmkzQ&_nc_ss=7a389&oh=00_Af089-ZcERGal-uzGvbowSViRF5TeLpiSFehntTqB2t2sg&oe=69E44189" alt="د. سالم الصرايرة">
+        <svg class="avatar-fallback" id="toothFallback" viewBox="0 0 100 100" fill="none">
+          <defs><linearGradient id="tfg" x1="50" y1="5" x2="50" y2="95" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e3f2fd"/><stop offset="40%" stop-color="#90caf9"/><stop offset="100%" stop-color="#1e88e5"/></linearGradient><filter id="tfs"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#42a5f5" flood-opacity="0.3"/></filter></defs>
+          <path d="M50 8 C38 8,25 14,22 28 C20 36,22 42,26 48 L32 72 C33 78,36 82,39 78 L42 62 C43 58,47 56,50 56 C53 56,57 58,58 62 L61 78 C64 82,67 78,68 72 L74 48 C78 42,80 36,78 28 C75 14,62 8,50 8Z" fill="url(#tfg)" filter="url(#tfs)"/>
+          <path d="M50 14 C40 14,30 19,28 30 C26 36,28 40,31 44 L35 58 C36 52,42 48,50 48 C58 48,64 52,65 58 L69 44 C72 40,74 36,72 30 C70 19,60 14,50 14Z" fill="rgba(255,255,255,0.15)"/>
+          <ellipse cx="42" cy="26" rx="6" ry="9" fill="rgba(255,255,255,0.18)" transform="rotate(-10 42 26)"/>
+          <line x1="38" y1="62" x2="40" y2="75" stroke="rgba(30,136,229,0.3)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="50" y1="58" x2="50" y2="78" stroke="rgba(30,136,229,0.2)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="62" y1="62" x2="60" y2="75" stroke="rgba(30,136,229,0.3)" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="avatar-glow"></div>
+    </div>
+    <h1 class="profile-name-ar">د. سالم الصرايرة</h1>
+    <p class="profile-name-en">Dr. Salem Al-Saraireh</p>
+    <p class="profile-spec">استشاري في <span class="highlight">طب وجراحة فم أسنان الأطفال</span> وذوي الإعاقة</p>
+  </section>
+
+  <div class="divider reveal"></div>
+
+  <section class="credentials glass reveal">
+    <p class="credentials-title">✦ Credentials</p>
+    <div class="cred-item"><div class="cred-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg></div><span class="cred-text">البورد الأردني في اختصاص طب أسنان الأطفال وذوي الاحتياجات الخاصة</span></div>
+    <div class="cred-item"><div class="cred-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="cred-text">اختصاص عالي — الخدمات الطبية الملكية الأردنية</span></div>
+    <div class="cred-item"><div class="cred-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><span class="cred-text">عضو جمعية طب أسنان الأطفال الأردنية</span></div>
+    <div class="cred-item"><div class="cred-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><span class="cred-text">بكالوريوس طب وجراحة الفم والأسنان — الجامعة الأردنية</span></div>
+  </section>
+
+  <section class="book-section reveal">
+    <a href="https://wa.me/962772219029?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%AD%D8%AC%D8%B2%20%D9%85%D9%88%D8%B9%D8%AF%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%B9%D9%8A%D8%A7%D8%AF%D8%A9" target="_blank" class="book-btn" onclick="addRipple(event)">
+      <div class="book-btn-glow"></div>
+      <svg viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+      <div class="book-btn-text">احجز موعدك الآن<span class="book-sub">Book via WhatsApp · 0772219029</span></div>
+    </a>
+  </section>
+
+  <section class="actions">
+    <p class="section-label reveal">تواصل معنا</p>
+    <a href="tel:0772219029" class="action-btn btn-call reveal" onclick="addRipple(event)"><div class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="btn-label">اتصل الآن<span class="btn-sub">0772219029</span></div><span class="btn-arrow">←</span></a>
+    <a href="tel:0798434367" class="action-btn btn-call reveal" onclick="addRipple(event)"><div class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="btn-label">رقم بديل<span class="btn-sub">0798434367</span></div><span class="btn-arrow">←</span></a>
+    <a href="https://wa.me/962772219029" target="_blank" class="action-btn btn-whatsapp reveal" onclick="addRipple(event)"><div class="btn-icon"><svg viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg></div><div class="btn-label">واتساب<span class="btn-sub">WhatsApp</span></div><span class="btn-arrow">←</span></a>
+    <a href="https://maps.app.goo.gl/QqpjwodSHCkRZMFW8" target="_blank" class="action-btn btn-maps reveal" onclick="addRipple(event)"><div class="btn-icon"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg></div><div class="btn-label">الموقع على الخريطة<span class="btn-sub">Google Maps</span></div><span class="btn-arrow">←</span></a>
+  </section>
+
+  <section class="social reveal">
+    <p class="section-label">تابعنا</p>
+    <div class="social-grid">
+      <a href="https://www.facebook.com/dr.salem.al.saraireh/" target="_blank" class="social-btn btn-facebook" onclick="addRipple(event)"><svg viewBox="0 0 24 24" fill="#fff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>فيسبوك</a>
+      <a href="https://www.instagram.com/drsalemalsaraireh/" target="_blank" class="social-btn btn-instagram" onclick="addRipple(event)"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>انستغرام</a>
+    </div>
+  </section>
+
+  <footer class="footer reveal">
+    <div class="footer-dots"><span class="footer-dot"></span><span class="footer-dot"></span><span class="footer-dot"></span></div>
+    <p class="footer-text">© 2025 Dr. Salem Al-Saraireh Clinic</p>
+  </footer>
+</main>
+
+<script>
+/* ========== WELCOME ========== */
+setTimeout(function(){
+  document.getElementById('welcome').classList.add('hide');
+  document.getElementById('main').classList.add('show');
+  setTimeout(initReveal, 400);
+}, 3000);
+
+/* ========== REVEAL ========== */
+function initReveal(){
+  var obs = new IntersectionObserver(function(entries){
+    for(var i = 0; i < entries.length; i++){
+      if(entries[i].isIntersecting){
+        (function(el, idx){ setTimeout(function(){ el.classList.add('visible'); }, idx * 80); })(entries[i].target, i);
+        obs.unobserve(entries[i].target);
+      }
+    }
+  }, {threshold: 0.15, rootMargin: '0px 0px -30px 0px'});
+  var items = document.querySelectorAll('.reveal, .cred-item');
+  for(var j = 0; j < items.length; j++) obs.observe(items[j]);
+}
+
+/* ========== RIPPLE ========== */
+function addRipple(e){
+  var btn = e.currentTarget, rect = btn.getBoundingClientRect();
+  var size = Math.max(rect.width, rect.height) * 1.2;
+  var cx = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : rect.left + rect.width/2);
+  var cy = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : rect.top + rect.height/2);
+  var rip = document.createElement('span');
+  rip.className = 'ripple';
+  rip.style.width = size + 'px'; rip.style.height = size + 'px';
+  rip.style.left = (cx - rect.left - size/2) + 'px';
+  rip.style.top = (cy - rect.top - size/2) + 'px';
+  btn.appendChild(rip);
+  setTimeout(function(){ rip.remove(); }, 600);
+}
+
+/* ========== STATIC AVATAR — image with SVG fallback ========== */
+(function(){
+  var img = document.getElementById('docPhoto');
+  var fallback = document.getElementById('toothFallback');
+  img.onerror = function(){
+    this.style.display = 'none';
+    fallback.style.display = 'block';
+  };
+})();
+
+/* ========== PARTICLES ========== */
+(function(){
+  var c = document.getElementById('particles');
+  for(var i = 0; i < 18; i++){
+    var p = document.createElement('div');
+    p.className = 'particle';
+    var s = Math.random() * 2.5 + 1;
+    p.style.width = s + 'px'; p.style.height = s + 'px';
+    p.style.left = (Math.random() * 100) + '%';
+    p.style.animationDuration = (Math.random() * 18 + 14) + 's';
+    p.style.animationDelay = (Math.random() * 20) + 's';
+    c.appendChild(p);
+  }
+})();
+</script>
+</body>
+</html>
